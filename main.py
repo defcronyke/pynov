@@ -16,9 +16,13 @@
 # this project's license terms taking first priority.
 
 import pynov
+from pynov import python
 
 def main():
     pynov.nov()
+
+    python.init()
+    python.run_file()
 
 if __name__ == "__main__":
     main()

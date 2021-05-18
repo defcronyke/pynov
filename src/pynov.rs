@@ -17,12 +17,31 @@
 
 use pyo3::prelude::*;
 
+#[cfg(feature = "python")]
+use pyo3::wrap_pyfunction;
+
+#[cfg(feature = "python")]
+fn init_python_mod(m: &PyModule) -> PyResult<()> {
+    use crate::python::*;
+
+    m.add_function(wrap_pyfunction!(init, m)?)?;
+    m.add_function(wrap_pyfunction!(run_file, m)?)?;
+
+    Ok(())
+}
+
 #[pymodule]
 fn pynov(_py: Python, m: &PyModule) -> PyResult<()> {
+    #[cfg(feature = "python")]
+    {
+        let python_mod = PyModule::new(_py, "python")?;
+        init_python_mod(python_mod)?;
+        m.add_submodule(python_mod)?;
+    }
+
     #[pyfn(m, "nov")]
     fn nov_py(_py: Python) -> PyResult<String> {
         let out = nov();
-
         Ok(out)
     }
 

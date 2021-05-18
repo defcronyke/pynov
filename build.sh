@@ -15,5 +15,5 @@
 # terms from all of the different technologies apply, with
 # this project's license terms taking first priority.
 
-RUST_BACKTRACE=full cargo build --color always $@ && \
+RUST_BACKTRACE=full cargo build --features vulkan,python --color always $@ && \
 cp target/debug/libpynov.so target/debug/pynov.so

@@ -15,9 +15,32 @@
     this project's license terms taking first priority.
 */
 
-extern crate libnov;
+#[cfg(feature = "python")]
+use pyo3::prelude::*;
 
-pub mod pynov;
-pub mod python;
+#[cfg(feature = "python")]
+use libnov::python;
 
-pub use pynov::*;
+#[cfg(feature = "python")]
+#[pyfunction]
+pub fn init() -> String {
+    let res = format!("pynov.python.init() called");
+
+    println!("{}", res);
+
+    let _ = python::init();
+
+    res
+}
+
+#[cfg(feature = "python")]
+#[pyfunction]
+pub fn run_file() -> String {
+    let res = format!("pynov.python.run_file() called");
+
+    println!("{}", res);
+
+    let _ = python::run_file("", vec![], vec![]);
+
+    res
+}
