@@ -16,4 +16,5 @@
 # this project's license terms taking first priority.
 
 RUST_BACKTRACE=full cargo build --features vulkan,python --color always && \
-cp target/debug/libpynov.so target/debug/pynov.so
+cp target/debug/libpynov.so target/debug/pynov.so && \
+cp target/debug/pynov.so .
