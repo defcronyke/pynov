@@ -15,6 +15,7 @@
     this project's license terms taking first priority.
 */
 
+use crate::libnov::ViewKind;
 use pyo3::prelude::*;
 
 #[cfg(feature = "python")]
@@ -51,6 +52,18 @@ fn pynov(_py: Python, m: &PyModule) -> PyResult<()> {
     init_view_mod(view_mod)?;
     m.add_submodule(view_mod)?;
 
+    #[pyfn(m, "main")]
+    fn main_py(_py: Python) -> PyResult<String> {
+        let out = main();
+        Ok(out)
+    }
+
+    #[pyfn(m, "libmain")]
+    fn libmain_py(_py: Python) -> PyResult<String> {
+        let out = libmain();
+        Ok(out)
+    }
+
     #[pyfn(m, "nov")]
     fn nov_py(_py: Python) -> PyResult<String> {
         let out = nov();
@@ -58,6 +71,50 @@ fn pynov(_py: Python, m: &PyModule) -> PyResult<()> {
     }
 
     Ok(())
+}
+
+fn main() -> String {
+    let res = format!("pynov.main() called");
+
+    println!("{}", res);
+
+    let _ = libnov::main(Ok(()), |view: &mut libnov::view::View, res| {
+        println!("libnov::main() called from python");
+
+        let view_name = view.get_name();
+
+        println!("[ {} available ]\n", view_name);
+
+        #[cfg(feature = "python")]
+        if view.feature_python.is_some() {
+            println!(
+                "[ {} feature available ]: {}",
+                view_name,
+                view.feature_python.as_ref().unwrap()
+            );
+        }
+
+        // This must run last.
+        libnov::window::Window::new(libnov::conf::load(None)?).open_image(res.clone());
+
+        res
+    });
+
+    res
+}
+
+fn libmain() -> String {
+    let res = format!("pynov.libmain() called");
+
+    println!("{}", res);
+
+    let _ = libnov::main(Ok(()), |_view: &mut libnov::view::View, res| {
+        println!("libnov::main() called from python");
+
+        res
+    });
+
+    res
 }
 
 fn nov() -> String {

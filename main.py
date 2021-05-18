@@ -16,13 +16,14 @@
 # this project's license terms taking first priority.
 
 import pynov
-from pynov import view
+# from pynov import view
 # from pynov import python
 
 def main():
-    pynov.nov()
-
-    view.new()
+    pynov.main()
+    
+    # pynov.nov()
+    # view.new()
     # python.init()
     # python.run_file()
 

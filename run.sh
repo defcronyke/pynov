@@ -17,4 +17,4 @@
 
 ./build.sh $@ && \
 RUST_BACKTRACE=full PYTHONPATH="$PWD/target/debug:$PWD/../libnov/data/src:$PYTHONPATH" \
-python main.py
+./main.py $@
