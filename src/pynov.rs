@@ -18,7 +18,6 @@
 use crate::libnov::ViewKind;
 use pyo3::prelude::*;
 
-#[cfg(feature = "python")]
 use pyo3::wrap_pyfunction;
 
 #[cfg(feature = "python")]
