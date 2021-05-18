@@ -15,10 +15,17 @@
     this project's license terms taking first priority.
 */
 
-extern crate libnov;
+use pyo3::prelude::*;
 
-pub mod pynov;
-pub mod python;
-pub mod view;
+use libnov::view;
 
-pub use pynov::*;
+#[pyfunction]
+pub fn new() -> String {
+    let res = format!("pynov.view.new() called");
+
+    println!("{}", res);
+
+    let _: view::View = view::new();
+
+    res
+}

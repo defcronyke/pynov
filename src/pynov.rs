@@ -30,6 +30,14 @@ fn init_python_mod(m: &PyModule) -> PyResult<()> {
     Ok(())
 }
 
+fn init_view_mod(m: &PyModule) -> PyResult<()> {
+    use crate::view::*;
+
+    m.add_function(wrap_pyfunction!(new, m)?)?;
+
+    Ok(())
+}
+
 #[pymodule]
 fn pynov(_py: Python, m: &PyModule) -> PyResult<()> {
     #[cfg(feature = "python")]
@@ -38,6 +46,10 @@ fn pynov(_py: Python, m: &PyModule) -> PyResult<()> {
         init_python_mod(python_mod)?;
         m.add_submodule(python_mod)?;
     }
+
+    let view_mod = PyModule::new(_py, "view")?;
+    init_view_mod(view_mod)?;
+    m.add_submodule(view_mod)?;
 
     #[pyfn(m, "nov")]
     fn nov_py(_py: Python) -> PyResult<String> {

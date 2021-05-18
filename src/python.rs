@@ -35,12 +35,20 @@ pub fn init() -> String {
 
 #[cfg(feature = "python")]
 #[pyfunction]
-pub fn run_file() -> String {
+pub fn run_file(
+    filepath: Option<&str>,
+    globals: Option<Vec<&str>>,
+    locals: Option<Vec<&str>>,
+) -> String {
     let res = format!("pynov.python.run_file() called");
 
     println!("{}", res);
 
-    let _ = python::run_file("", vec![], vec![]);
+    let f = filepath.unwrap_or_default();
+    let g = globals.unwrap_or_default();
+    let l = locals.unwrap_or_default();
+
+    let _ = python::run_file(f, g, l);
 
     res
 }

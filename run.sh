@@ -16,5 +16,5 @@
 # this project's license terms taking first priority.
 
 ./build.sh $@ && \
-PYTHONPATH="$PWD/target/debug:$PWD/../libnov/data/src:$PYTHONPATH" \
+RUST_BACKTRACE=full PYTHONPATH="$PWD/target/debug:$PWD/../libnov/data/src:$PYTHONPATH" \
 python main.py
